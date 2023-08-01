@@ -1,2 +1,4 @@
-# go_weather_tool
-Simple weather forecast command line tool with Go
+# Simple Go Weather Command line Tool
+
+A simple Go commandline program that uses the OpenWeatherMap Api to forecast the weather of a city input by the user
+

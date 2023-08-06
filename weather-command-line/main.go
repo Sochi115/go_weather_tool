@@ -4,11 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
-	// "github.com/gin-gonic/gin"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
-var API_KEY string = "c7879271fb0d4d2004f8828467eeeb4f"
+
+var API_KEY string = ""
+
 var CLIENT *http.Client = &http.Client{}
 
 // func helloWorld(c *gin.Context) {
@@ -64,6 +69,12 @@ func getWeatherForecast(lat float64, long float64) WeatherData {
 }
 
 func main() {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	API_KEY = os.Getenv("API_KEY")
 	// lat, lon := getGeoCode("Phnom Penh")
 	lat := 11.5682711
 	lon :=  104.9224426

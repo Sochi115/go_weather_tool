@@ -80,5 +80,5 @@ func main() {
 	lon :=  104.9224426
 	x := getWeatherForecast(lat, lon)
 
-	fmt.Println(x)
+	printWeatherInfo(x)
 }

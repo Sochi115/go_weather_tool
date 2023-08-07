@@ -48,7 +48,7 @@ func getGeoCode(country string) (float64, float64) {
 }
 
 func getWeatherForecast(lat float64, long float64) WeatherData {
-	api := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=%v",lat, long, API_KEY)
+	api := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=%v&units=metric",lat, long, API_KEY)
 
 	resp, err := CLIENT.Get(api)
 	if err != nil {
@@ -80,5 +80,5 @@ func main() {
 	lon :=  104.9224426
 	x := getWeatherForecast(lat, lon)
 
-	printWeatherInfo(x)
+	printForecast(x)
 }

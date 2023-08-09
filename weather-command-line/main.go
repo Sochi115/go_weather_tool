@@ -75,9 +75,11 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	API_KEY = os.Getenv("API_KEY")
-	// lat, lon := getGeoCode("Phnom Penh")
-	lat := 11.5682711
-	lon :=  104.9224426
+
+	city := getUserCity()
+
+	lat, lon := getGeoCode(city)
+
 	x := getWeatherForecast(lat, lon)
 
 	printForecast(x)

@@ -13,9 +13,8 @@ func getUserCity() string {
 
 func getLocationIndex(locations []interface{}) int16{
 
-	fmt.Println(locations...)
 	length := len(locations)
-	if (length == 1) {
+	if (length <= 1) {
 		return 0
 	} else {
 		fmt.Println("Multiple locations detected, select the correct location:")

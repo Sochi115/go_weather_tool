@@ -12,18 +12,23 @@ func getUserCity() string {
 }
 
 func getLocationIndex(locations []interface{}) int16{
-	fmt.Println("Multiple locations detected, select the correct location:")
 
+	fmt.Println(locations...)
 	length := len(locations)
-	for i, v := range locations {
-		area := v.(map[string]interface{})
+	if (length == 1) {
+		return 0
+	} else {
+		fmt.Println("Multiple locations detected, select the correct location:")
+		for i, v := range locations {
+			area := v.(map[string]interface{})
 
-		state := area["state"]
-		country := area["country"]
-		fmt.Printf("%v. %v %v \n", i+1, state, country)
+			state := area["state"]
+			country := area["country"]
+			fmt.Printf("%v. %v %v \n", i+1, state, country)
+		}
+
+		return getUserIndexChoice(length)
 	}
-
-	return getUserIndexChoice(length)
 }
 
 func getUserIndexChoice(length int) int16 {
@@ -33,7 +38,7 @@ func getUserIndexChoice(length int) int16 {
 	fmt.Scanln(&choice)
 
 	if choice <= int16(length){
-		return choice -1
+		return choice - 1
 	} else {
 		fmt.Println("Invalid index entered!")
 		return getUserIndexChoice(length)

@@ -20,7 +20,7 @@ var CLIENT *http.Client = &http.Client{}
 // 	fmt.Fprintf(c.Writer, "Hello World")
 // }
 
-func getGeoCode(country string) (float64, float64) {
+func getGeoCodes(country string) []interface{} {
 	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v&limit=5&apikey=%v", country, API_KEY)
 
 	resp, err := CLIENT.Get(api)
@@ -39,12 +39,7 @@ func getGeoCode(country string) (float64, float64) {
 
 	locations := x.([]interface{})
 
-	area := locations[0]
-	areaMap := area.(map[string]interface{})
-
-	lat := areaMap["lat"]
-	lon := areaMap["lon"]
-	return lat.(float64), lon.(float64)
+	return locations
 }
 
 func getWeatherForecast(lat float64, long float64) WeatherData {
@@ -68,6 +63,15 @@ func getWeatherForecast(lat float64, long float64) WeatherData {
 
 }
 
+func getLatAndLon(locations []interface{}, index int16) (float64,float64){
+
+	area := locations[0]
+	areaMap := area.(map[string]interface{})
+
+	lat := areaMap["lat"]
+	lon := areaMap["lon"]
+	return lat.(float64), lon.(float64)
+}
 func main() {
 	err := godotenv.Load()
 
@@ -75,9 +79,16 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	API_KEY = os.Getenv("API_KEY")
-	// lat, lon := getGeoCode("Phnom Penh")
-	lat := 11.5682711
-	lon :=  104.9224426
+
+	city := getUserCity()
+
+
+	locations := getGeoCodes(city)
+
+	choice := getLocationIndex(locations)
+
+	lat, lon := getLatAndLon(locations, choice)
+
 	x := getWeatherForecast(lat, lon)
 
 	printForecast(x)

@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var reader = bufio.NewReader(os.Stdin)
@@ -15,7 +17,7 @@ func getUserCity() string {
 	city, err := reader.ReadString('\n')
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal(err)
 	}
 
 	return city
@@ -45,12 +47,12 @@ func getUserIndexChoice(length int) int16 {
 	fmt.Printf("%-15v", "Enter location index: ")
 	choiceString, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal(err)
 	}
-	choice, err:= strconv.Atoi(choiceString)
+	choice, err:= strconv.Atoi(strings.TrimRight(choiceString, "\r\n"))
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal(err)
 	}
 
 	if choice <= length{

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"strings"
 )
 
@@ -13,13 +14,13 @@ func getGeoCodes(country string) []interface{} {
 
 	resp, err := CLIENT.Get(api)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatal(err)
 	}
 	var x interface{}
 
@@ -49,7 +50,7 @@ func filterLocations(city string, locations[]interface{}) []interface{} {
 
 func getCoordinates(locations []interface{}, index int16) (float64,float64){
 
-	area := locations[0]
+	area := locations[index]
 	areaMap := area.(map[string]interface{})
 
 	lat := areaMap["lat"]

@@ -49,7 +49,6 @@ func main() {
 
 	locations := getGeoCodes(city)
 	
-	fmt.Println(locations)
 	filtered_locations := filterLocations(city, locations)
 
 	choice := getLocationIndex(filtered_locations)

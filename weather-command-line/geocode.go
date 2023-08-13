@@ -8,6 +8,7 @@ import (
 )
 
 func getGeoCodes(country string) []interface{} {
+	country = strings.TrimSpace(country)
 	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v&limit=5&apikey=%v", country, API_KEY)
 
 	resp, err := CLIENT.Get(api)
@@ -30,6 +31,7 @@ func getGeoCodes(country string) []interface{} {
 }
 func filterLocations(city string, locations[]interface{}) []interface{} {
 	var result []interface{}
+	city = strings.TrimRight(city,"\r\n")
 
 
 	for _, v := range(locations) {
@@ -38,9 +40,7 @@ func filterLocations(city string, locations[]interface{}) []interface{} {
 			x := area["name"]
 			name := x.(string)
 
-			fmt.Println(name)
-			fmt.Println(city)
-			if strings.EqualFold(name,city) {
+			if name == city {
 				result = append(result, v)
 			}
 	}

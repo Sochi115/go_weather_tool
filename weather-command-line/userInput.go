@@ -1,12 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+var reader = bufio.NewReader(os.Stdin)
 
 func getUserCity() string {
-	var city string
 
 	fmt.Print("Enter city: ")
-	fmt.Scanln(&city)
+	city, err := reader.ReadString('\n')
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
 	return city
 }
@@ -31,13 +41,20 @@ func getLocationIndex(locations []interface{}) int16{
 }
 
 func getUserIndexChoice(length int) int16 {
-	var choice int16;
 	fmt.Println()
 	fmt.Printf("%-15v", "Enter location index: ")
-	fmt.Scanln(&choice)
+	choiceString, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	choice, err:= strconv.Atoi(choiceString)
 
-	if choice <= int16(length){
-		return choice - 1
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if choice <= length{
+		return int16(choice - 1)
 	} else {
 		fmt.Println("Invalid index entered!")
 		return getUserIndexChoice(length)

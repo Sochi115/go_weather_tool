@@ -39,12 +39,7 @@ func getHttpClient() *client {
 				apiKey: getApiKey(),
 				client: &http.Client{}}
 
-			log.Default().Println("New HTTP Client instantiated")
-		} else {
-			log.Default().Println("HTTP Client already instantiated")
 		}
-	} else {
-		log.Default().Println("HTTP Client already instantiated")
 	}
 	return clientInstance
 }

@@ -20,16 +20,15 @@ func printLocationInfo(wd WeatherData){
 	fmt.Printf("%-15v %v\n", "Country:", wd.Sys.Country)
 	fmt.Printf("%-5v %v   %-5v %v\n", "Sunrise:", parseUnixToTimeString(int64(wd.Sys.Sunrise)), "Sunset:", parseUnixToTimeString(int64(wd.Sys.Sunset)))
 }
+
 func printTempInfo(wd WeatherData) {
 	fmt.Println()
 	fmt.Println("TEMPERATURE")
 	fmt.Printf("%-15v %v - %v (celsius)\n", "Temp range:", wd.Main.TempMin, wd.Main.TempMax)
 	fmt.Printf("%-15v %v%%\n", "Humidity:", wd.Main.Humidity)
 	fmt.Printf("%-15v %v (hPa)\n", "Pressure:", wd.Main.Pressure)
-
-
-
 }
+
 func printWeatherInfo(wd WeatherData){
 	fmt.Println()
 	fmt.Println("WEATHER")
@@ -42,6 +41,7 @@ func printLastUpdated(wd WeatherData){
 	fmt.Println()
 	fmt.Printf("%-15v %v\n", "Last Updated:", parseUnixToTimeString(int64(wd.Dt)))
 }
+
 func parseUnixToTimeString(unix int64) string {
 	// tm := time.Unix(unix, 0).Format("Kitchen")
 	tm := time.Unix(unix, 0)

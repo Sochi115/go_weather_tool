@@ -11,8 +11,7 @@ import (
 
 var reader = bufio.NewReader(os.Stdin)
 
-func getUserCity() string {
-
+func promptUserCity() string {
 	fmt.Print("Enter city: ")
 	city, err := reader.ReadString('\n')
 
@@ -23,10 +22,9 @@ func getUserCity() string {
 	return city
 }
 
-func getLocationIndex(locations []interface{}) int16{
-
+func promptLocationChoice(locations []interface{}) int16 {
 	length := len(locations)
-	if (length <= 1) {
+	if length <= 1 {
 		return 0
 	} else {
 		fmt.Println("Multiple locations detected, select the correct location:")
@@ -38,27 +36,27 @@ func getLocationIndex(locations []interface{}) int16{
 			fmt.Printf("%v. %v %v \n", i+1, state, country)
 		}
 
-		return getUserIndexChoice(length)
+		return promptUserIndexChoice(length)
 	}
 }
 
-func getUserIndexChoice(length int) int16 {
+func promptUserIndexChoice(length int) int16 {
 	fmt.Println()
 	fmt.Printf("%-15v", "Enter location index: ")
 	choiceString, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
 	}
-	choice, err:= strconv.Atoi(strings.TrimRight(choiceString, "\r\n"))
+	choice, err := strconv.Atoi(strings.TrimRight(choiceString, "\r\n"))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if choice <= length{
+	if choice <= length {
 		return int16(choice - 1)
 	} else {
 		fmt.Println("Invalid index entered!")
-		return getUserIndexChoice(length)
+		return promptUserIndexChoice(length)
 	}
 }

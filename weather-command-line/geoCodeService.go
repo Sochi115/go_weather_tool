@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func getCityCoordinates(city string, apiKey string) (float64, float64) {
-	var locations = getGeoCodesData(city, apiKey)
+func getCityCoordinates(city string) (float64, float64) {
+	var locations = getGeoCodesData(city)
 	filtered_locations := filterLocations(city, locations)
 
 	index := promptLocationChoice(filtered_locations)
@@ -18,11 +18,12 @@ func getCityCoordinates(city string, apiKey string) (float64, float64) {
 	return extractCoordinates(chosenLocation.(map[string]interface{}))
 }
 
-func getGeoCodesData(city string, apiKey string) []interface{} {
+func getGeoCodesData(city string) []interface{} {
+	httpClient := getHttpClient()
 	city = strings.TrimSpace(city)
-	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v&limit=5&apikey=%v", city, apiKey )
+	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v&limit=5&apikey=%v", city, httpClient.apiKey)
 
-	resp, err := CLIENT.Get(api)
+	resp, err := httpClient.client.Get(api)
 	if err != nil {
 		log.Fatal(err)
 	}

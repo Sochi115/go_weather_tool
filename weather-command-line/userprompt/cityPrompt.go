@@ -1,7 +1,9 @@
 package userprompt
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -10,18 +12,16 @@ import (
 type Cityprompt struct {
 }
 
-var reader = getReaderInstance()
-
 func (c Cityprompt) GetCoordinates(httpClient *http.Client, apiKey string) (float64, float64) {
 	city := promptCity()
 	countryCode := promptCountryCode()
 
-	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v,,%v&limit=5&apikey=%v", strings.TrimSpace(city), strings.TrimSpace(countryCode), apiKey)
+	api := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%v,,%v&limit=5&apikey=%v", city, countryCode, apiKey)
 
-	locations := getLocationList(httpClient, api)
+	locations := getCityList(httpClient, api)
 
 	if len(locations) > 1 {
-		locations = filterLocations(city, locations)
+		locations = filterCityList(city, locations)
 	}
 
 	index := promptLocationChoice(locations)
@@ -37,22 +37,43 @@ func promptCity() string {
 		log.Fatal(err)
 	}
 
-	return city
+	city = strings.TrimSpace(city)
+	return strings.TrimRight(city, "\r\n")
 }
-func promptCountryCode() string {
-	fmt.Print("Enter Country Code (2 Letters): ")
-	countryCode, err := reader.ReadString('\n')
 
+func getCityList(httpClient *http.Client, apiUrl string) []interface{} {
+	resp, err := httpClient.Get(apiUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer resp.Body.Close()
 
-	countryCode = strings.TrimRight(countryCode, "\r\n")
-	if len(countryCode) != 2 {
-		fmt.Println(len(countryCode))
-		fmt.Printf("Invalid country code!")
-		return promptCountryCode()
-	} else {
-		return countryCode
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
 	}
+	var x interface{}
+
+	json.Unmarshal(body, &x)
+
+	locations := x.([]interface{})
+
+	return locations
+}
+
+func filterCityList(city string, locations []interface{}) []interface{} {
+	var result []interface{}
+	city = strings.TrimRight(city, "\r\n")
+
+	for _, v := range locations {
+		area := v.(map[string]interface{})
+
+		x := area["name"]
+		name := x.(string)
+
+		if name == city {
+			result = append(result, v)
+		}
+	}
+	return result
 }

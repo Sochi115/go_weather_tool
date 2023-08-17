@@ -1,51 +1,11 @@
 package userprompt
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"strconv"
 	"strings"
 )
-
-func getLocationList(httpClient *http.Client, apiUrl string) []interface{} {
-	resp, err := httpClient.Get(apiUrl)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	var x interface{}
-
-	json.Unmarshal(body, &x)
-
-	locations := x.([]interface{})
-
-	return locations
-}
-
-func filterLocationsByCity(city string, locations []interface{}) []interface{} {
-	var result []interface{}
-	city = strings.TrimRight(city, "\r\n")
-
-	for _, v := range locations {
-		area := v.(map[string]interface{})
-
-		x := area["name"]
-		name := x.(string)
-
-		if name == city {
-			result = append(result, v)
-		}
-	}
-	return result
-}
 
 func extractCoordinates(location map[string]interface{}) (float64, float64) {
 	lat := location["lat"]

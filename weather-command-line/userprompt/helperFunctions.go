@@ -30,7 +30,7 @@ func getLocationList(httpClient *http.Client, apiUrl string) []interface{} {
 	return locations
 }
 
-func filterLocations(city string, locations []interface{}) []interface{} {
+func filterLocationsByCity(city string, locations []interface{}) []interface{} {
 	var result []interface{}
 	city = strings.TrimRight(city, "\r\n")
 
@@ -89,5 +89,24 @@ func promptUserIndexChoice(length int) int16 {
 	} else {
 		fmt.Println("Invalid index entered!")
 		return promptUserIndexChoice(length)
+	}
+}
+
+func promptCountryCode() string {
+	fmt.Print("Enter Country Code (2 Letters): ")
+	countryCode, err := reader.ReadString('\n')
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	countryCode = strings.TrimRight(countryCode, "\r\n")
+	if len(countryCode) != 2 {
+		fmt.Println(len(countryCode))
+		fmt.Printf("Invalid country code!")
+		return promptCountryCode()
+	} else {
+		countryCode = strings.TrimSpace(countryCode)
+		return strings.TrimRight(countryCode, "\r\n")
 	}
 }

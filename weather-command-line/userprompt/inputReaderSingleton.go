@@ -20,3 +20,6 @@ func getReaderInstance() *bufio.Reader{
 	}
 	return readerInstance
 }
+
+// Initialise reader here
+var reader = getReaderInstance()

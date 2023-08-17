@@ -53,7 +53,7 @@ func promptUserIndexChoice(length int) int16 {
 		log.Fatal(err)
 	}
 
-	if choice <= length {
+	if choice <= length && choice > 0 {
 		return int16(choice - 1)
 	} else {
 		fmt.Println("Invalid index entered!")

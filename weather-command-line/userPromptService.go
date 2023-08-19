@@ -11,38 +11,23 @@ import (
 
 var reader = bufio.NewReader(os.Stdin)
 
-func promptUserCity() string {
-	fmt.Print("Enter city: ")
-	city, err := reader.ReadString('\n')
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return city
+func promptZipOrCityChoice() int16{
+	printInitialMenu()
+	return promptMenuChoice()
 }
 
-func promptLocationChoice(locations []interface{}) int16 {
-	length := len(locations)
-	if length <= 1 {
-		return 0
-	} else {
-		fmt.Println("Multiple locations detected, select the correct location:")
-		for i, v := range locations {
-			area := v.(map[string]interface{})
-
-			state := area["state"]
-			country := area["country"]
-			fmt.Printf("%v. %v %v \n", i+1, state, country)
-		}
-
-		return promptUserIndexChoice(length)
-	}
-}
-
-func promptUserIndexChoice(length int) int16 {
+func printInitialMenu() {
+	fmt.Println("======== WEATHER CLI =========")
 	fmt.Println()
-	fmt.Printf("%-15v", "Enter location index: ")
+	fmt.Println("How would you like to enter location?")
+	fmt.Println()
+	fmt.Println("1. City + Country")
+	fmt.Println("2. Zip code + Country")
+}
+
+func promptMenuChoice() int16 {
+	fmt.Println()
+	fmt.Printf("%-15v", "Enter choice number: ")
 	choiceString, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
@@ -53,10 +38,10 @@ func promptUserIndexChoice(length int) int16 {
 		log.Fatal(err)
 	}
 
-	if choice <= length && choice > 0 {
-		return int16(choice - 1)
+	if choice <= 2 && choice > 0 {
+		return int16(choice)
 	} else {
-		fmt.Println("Invalid index entered!")
-		return promptUserIndexChoice(length)
+		fmt.Println("Invalid number entered!")
+		return promptMenuChoice()
 	}
 }

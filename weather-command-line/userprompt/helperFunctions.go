@@ -33,7 +33,7 @@ func promptLocationChoice(locations []interface{}) int16 {
 
 func promptUserIndexChoice(length int) int16 {
 	fmt.Println()
-	fmt.Printf("%-15v", "Enter location index: ")
+	fmt.Printf("%-15v", "Enter location number: ")
 	choiceString, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)

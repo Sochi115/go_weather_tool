@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"weather-command-line/weather-command-line/userprompt"
 )
@@ -24,6 +25,7 @@ func promptByZip(httpClient *client) {
 	lat, long, err := zipprompt.GetCoordinates(httpClient.client, httpClient.apiKey)
 
 	if err != nil {
+		fmt.Println()
 		log.Default().Println(err.Error())
 		promptByCity(httpClient)
 		return

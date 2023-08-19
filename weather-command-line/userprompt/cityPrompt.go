@@ -12,7 +12,7 @@ import (
 type Cityprompt struct {
 }
 
-func (c Cityprompt) GetCoordinates(httpClient *http.Client, apiKey string) (float64, float64) {
+func (c Cityprompt) GetCoordinates(httpClient *http.Client, apiKey string) (float64, float64, error) {
 	city := promptCity()
 	countryCode := promptCountryCode()
 
@@ -27,7 +27,9 @@ func (c Cityprompt) GetCoordinates(httpClient *http.Client, apiKey string) (floa
 	index := promptLocationChoice(locations)
 	chosenLocation := locations[index]
 
-	return extractCoordinates(chosenLocation.(map[string]interface{}))
+	lat, lon :=  extractCoordinates(chosenLocation.(map[string]interface{}))
+
+	return lat, lon, nil
 }
 func promptCity() string {
 	fmt.Print("Enter city: ")
